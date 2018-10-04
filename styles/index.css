@@ -1,0 +1,247 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+button, input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:hover:disabled {
+  cursor: default;
+}
+
+.hidden {
+  display: none;
+}
+
+.add-bookmark {
+  clear: right;
+  display: inline-block;
+}
+
+.bookmark-title-url-entry-form {
+  margin-bottom: 25px;
+}
+
+.bookmark-title-entry, .bookmark-url-entry {
+  padding: 10px;
+  width: 48%;
+  margin-bottom: 20px;
+}
+
+.bookmark-title-entry {
+  margin-right: 3%;
+}
+
+textarea {
+  resize: none;
+  margin-bottom: 12px;
+}
+
+.select-rating-radio-btns {
+  position: relative;
+  display: inline-block;
+  clear: both;
+  float: right;
+}
+
+li {
+  list-style: none;
+}
+
+.bookmark-container {
+  margin-bottom: 20px;
+}
+
+.bookmark-title-container {
+  background-color: rgb(241, 241, 241);
+  padding: 10px;
+  border: 1px solid gray;
+  height: 46px;
+  /* vertical-align: top; */
+}
+
+.bookmark-description-container {
+  /* background-color: rgb(241, 241, 241); */
+  padding: 10px;
+  border: 1px solid gray;
+  border-top: none;
+  height: 212px;
+}
+
+.bookmark-user-description-input {
+  background-color: white;
+  padding: 3px;
+  border: 1px solid gray;
+  height: 125px;
+  margin-top: 10px;
+}
+
+.bookmark-visit-site-btn, .bookmark-delete-btn, .bookmark-edit-btn {
+  padding: 3px 10px 3px 10px;
+  margin-top: 10px;
+}
+
+.bookmark-visit-site-btn {
+  clear: right;
+  /* display: inline-block; */
+}
+
+.bookmark-delete-btn, .bookmark-edit-btn {
+  float: right;
+}
+
+.bookmark-edit-btn {
+  margin-right: 10px;
+}
+
+
+
+
+
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/*  */
+/*  */
+/* Dropdown Button */
+/*  */
+/*  */
+
+.dropbtn {
+  background-color: #ddd;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  font-size: 16px;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  /* display: inline-block; */
+  clear: both;
+  float: right;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #ddd;}
+
+/*  */
+/*  */
+/* Dropdown Button ENDS HERE*/
+/*  */
+/*  */
+
+
+/*  */
+/*  */
+/* The switch - the box around the slider */
+/*  */
+/*  */
+
+.switch {
+  position: relative;
+  /* display: inline-block; */
+  clear: left;
+  float: right;
+  width: 52px;
+  height: 25px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/*  */
+/*  */
+/* The switch - ENDS */
+/*  */
+/*  */
