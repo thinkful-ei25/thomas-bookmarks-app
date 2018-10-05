@@ -16,8 +16,8 @@ const api = (function(){
       data: newBookmark,
       success: callback,
       error: (err) => {
-        bookmarks.error = err.statusText;
-        alert(bookmarks.error + ' Attributes `title` and `url` required');
+        bookmarks.error = err.responseJSON.message;
+        alert(bookmarks.error);
       },
     });
   }
@@ -30,8 +30,8 @@ const api = (function(){
       data: updateData,
       success: callback,
       error: (err) => {
-        bookmarks.error = err.statusText;
-        alert(bookmarks.error + ' Attributes `title` and `url` required');
+        bookmarks.error = err.responseJSON.message;
+        alert(bookmarks.error);
       },
     });
   }

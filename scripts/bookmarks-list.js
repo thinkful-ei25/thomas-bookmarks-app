@@ -35,7 +35,7 @@ const bookmarkList = (function() {
 
         <h2>Add New Bookmark</h2>
         <input type="text" name="bookmark-title-entry" class="js-bookmark-title-entry bookmark-title-entry" placeholder="Bookmark Title">
-        <input type="text" name="bookmark-url-entry" class="js-bookmark-url-entry bookmark-url-entry" placeholder="Bookmark URL">
+        <input type="text" name="bookmark-url-entry" class="js-bookmark-url-entry bookmark-url-entry" placeholder="https://">
         
         <textarea rows="8" cols="50" maxlength="300" name="bookmark-user-description-entry" form="bookmark-description-entry" class="js-bookmark-user-description-entry bookmark-user-description-entry" placeholder="Enter bookmark description here..."></textarea>
         
@@ -106,6 +106,7 @@ const bookmarkList = (function() {
         bookmarks.adding = false;
         render();
       });
+      console.log(bookmarks);
     });
   }
 
@@ -155,5 +156,5 @@ const bookmarkList = (function() {
     render,
     bindEventListeners,
   };
-  
+
 }());
