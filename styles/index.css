@@ -14,6 +14,7 @@ h1 {
 button, input[type="text"] {
   padding: 10px;
   font-size: 16px;
+  border-radius: 4px;
 }
 
 button:hover {
@@ -117,11 +118,6 @@ li {
   float: right;
   margin: 2px;
 }
-
-
-
-
-
 
 .container {
   max-width: 600px;

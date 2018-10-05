@@ -7,6 +7,9 @@ const api = (function(){
     $.getJSON(`${BASE_URL}/bookmarks`, callback);
   }
 
+  // could not get this method to work just yet. leaving here for future updates.
+  // function createBookmark(newBookmark, callback){
+  // const newBookmark = JSON.stringify(jsonData);
   function createBookmark(newTitle, newUrl, description, stars, callback){
     const newBookmark = JSON.stringify({title: newTitle, url: newUrl, desc: description, rating: stars});
     $.ajax({
@@ -21,6 +24,7 @@ const api = (function(){
       },
     });
   }
+  
   function updateBookmark(id, updateData, callback){
     updateData = JSON.stringify(updateData);
     $.ajax({

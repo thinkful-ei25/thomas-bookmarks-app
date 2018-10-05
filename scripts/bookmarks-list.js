@@ -34,18 +34,18 @@ const bookmarkList = (function() {
     return `
 
         <h2>Add New Bookmark</h2>
-        <input type="text" name="bookmark-title-entry" class="js-bookmark-title-entry bookmark-title-entry" placeholder="Bookmark Title">
-        <input type="text" name="bookmark-url-entry" class="js-bookmark-url-entry bookmark-url-entry" placeholder="https://">
+        <input type="text" name="title" class="js-bookmark-title-entry bookmark-title-entry" placeholder="Bookmark Title">
+        <input type="text" name="url" class="js-bookmark-url-entry bookmark-url-entry" placeholder="https://">
         
-        <textarea rows="8" cols="50" maxlength="300" name="bookmark-user-description-entry" form="bookmark-description-entry" class="js-bookmark-user-description-entry bookmark-user-description-entry" placeholder="Enter bookmark description here..."></textarea>
+        <textarea rows="8" cols="50" maxlength="300" name="desc" form="bookmark-description-entry" class="js-bookmark-user-description-entry bookmark-user-description-entry" placeholder="Enter bookmark description here..."></textarea>
         
         <div class="select-rating-radio-btns">
           Select a rating:<br><br>
-          <input type="radio" name="user-star-rating" class="five-stars-radio" value="5"> 5 stars &nbsp;<span>★★★★★</span><br>
-          <input type="radio" name="user-star-rating" class="four-stars-radio" value="4"> 4 stars &nbsp;<span>★★★★☆</span><br>
-          <input type="radio" name="user-star-rating" class="three-stars-radio" value="3"> 3 stars &nbsp;★★★☆☆</span><br>
-          <input type="radio" name="user-star-rating" class="two-stars-radio" value="2"> 2 stars &nbsp;<span>★★☆☆☆</span><br>
-          <input type="radio" name="user-star-rating" class="one-stars-radio" value="1"> 1 star &nbsp;&nbsp;&nbsp;<span>★☆☆☆☆</span><br>
+          <input type="radio" name="rating" class="five-stars-radio" value="5"> 5 stars &nbsp;<span>★★★★★</span><br>
+          <input type="radio" name="rating" class="four-stars-radio" value="4"> 4 stars &nbsp;<span>★★★★☆</span><br>
+          <input type="radio" name="rating" class="three-stars-radio" value="3"> 3 stars &nbsp;★★★☆☆</span><br>
+          <input type="radio" name="rating" class="two-stars-radio" value="2"> 2 stars &nbsp;<span>★★☆☆☆</span><br>
+          <input type="radio" name="rating" class="one-stars-radio" value="1"> 1 star &nbsp;&nbsp;&nbsp;<span>★☆☆☆☆</span><br>
         </div>  
         
         <div> 
@@ -97,8 +97,8 @@ const bookmarkList = (function() {
       $('.js-bookmark-url-entry').val('');
       const newBookmarkDescription = $('.js-bookmark-user-description-entry').val();
       $('.js-bookmark-user-description-entry').val('');
-      const newStarRating = $('input[name=user-star-rating]:checked').val();
-      $('input[name=user-star-rating]:checked').val('');
+      const newStarRating = $('input[name=rating]:checked').val();
+      $('input[name=rating]:checked').val('');
 
       // create and add to both API and DOM
       api.createBookmark(newBookmarkName, newBookmarkURL, newBookmarkDescription, newStarRating, (callback) => {
@@ -109,6 +109,22 @@ const bookmarkList = (function() {
       console.log(bookmarks);
     });
   }
+
+  // NOTE: could not get this code to work with my <textarea> input.
+  //
+  // function handleNewBookmarkSubmit () {
+  //   $('#js-create-bookmark-form').submit(function(event) {
+  //     event.preventDefault();
+  //     const jsonData = $(event.target).serializeJson();
+  //     console.log('logging jsonData' + jsonData);
+  //     api.createBookmark(jsonData, (callback) => {
+  //       bookmarks.addItem(callback);
+  //       bookmarks.adding = false;
+  //       render();
+  //     });
+  //     console.log('logging bookmarks' + bookmarks);
+  //   });
+  // }
 
   function getBookmarkIdFromElement(bookmark) {
     return $(bookmark)

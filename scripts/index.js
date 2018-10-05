@@ -12,3 +12,13 @@ api.getItems((items) => {
   bookmarkList.render();
   // console.log(bookmarks);
 });
+
+$.fn.extend({
+  serializeJson: function() {
+    if (!this.is('form')) throw new TypeError('Not a form type');
+    const formData = new FormData(this[0]);
+    const o = {};
+    formData.forEach((val, name) => o[name] = val);
+    return JSON.stringify(o);
+  }
+});
