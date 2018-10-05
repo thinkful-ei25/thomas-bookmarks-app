@@ -26,8 +26,10 @@ const bookmarks = (function(){
 
   return {
     items: [],
-    adding: true,
-    hideCheckedItems: true,
+    adding: false,
+    hideCheckedItems: false,
+    filterByValue: 0,
+
     addItem,
     findAndDelete,
     findAndUpdate,

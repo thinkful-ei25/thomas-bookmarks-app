@@ -29,31 +29,14 @@ const bookmarkList = (function() {
   }
 
   function generateAddingBookmarkElement() {
-    if (!bookmarks.adding) {
-      return `
-      <div class="add-bookmark js-add-bookmark">
-        <button type="submit" class="add-bookmark-btn js-add-bookmark-btn">
-          <span class="bookmark-button-label">Add Bookmark</span>
-        </button>
-      </div>
-      <div class="dropdown">
-        <button class="dropbtn">Minimum Rating</button>
-        <div class="dropdown-content">
-          <a href="#">5 Stars &nbsp;<span>★★★★★</span></a>
-          <a href="#">4 Stars &nbsp;<span>★★★★☆</span></a>
-          <a href="#">3 Stars &nbsp;<span>★★★☆☆</span></a>
-          <a href="#">2 Stars &nbsp;<span>★★☆☆☆</span></a>
-          <a href="#">1 Star &nbsp;&nbsp;&nbsp;<span>★☆☆☆☆</span></a>
-        </div>
-      </div>
-    `;
-    } else {
-      return `
-      <form id="js-create-bookmark-form" class="bookmark-title-url-entry-form">
+    return `
+
         <h2>Add New Bookmark</h2>
         <input type="text" name="bookmark-title-entry" class="js-bookmark-title-entry bookmark-title-entry" placeholder="Bookmark Title">
         <input type="text" name="bookmark-url-entry" class="js-bookmark-url-entry bookmark-url-entry" placeholder="Bookmark URL">
+        
         <textarea rows="8" cols="50" maxlength="300" name="bookmark-user-description-entry" form="bookmark-description-entry" class="js-bookmark-user-description-entry bookmark-user-description-entry" placeholder="Enter bookmark description here..."></textarea>
+        
         <div class="select-rating-radio-btns">
           Select a rating:<br><br>
           <input type="radio" name="user-star-rating" class="five-stars-radio" value="5"> 5 stars &nbsp;<span>★★★★★</span><br>
@@ -62,20 +45,36 @@ const bookmarkList = (function() {
           <input type="radio" name="user-star-rating" class="two-stars-radio" value="2"> 2 stars &nbsp;<span>★★☆☆☆</span><br>
           <input type="radio" name="user-star-rating" class="one-stars-radio" value="1"> 1 star &nbsp;&nbsp;&nbsp;<span>★☆☆☆☆</span><br>
         </div>  
+        
         <div> 
           <button type="submit">Create New Bookmark</button>
         </div>
-      </form>
+
     `;
-    }
   }
 
-  // function generateAddingBookmarkString() {
-  //   const bookmarkAddingState = generateAddingBookmarkElement(generateAddingBookmarkElement());
+  // function generateAddBookmarkAndMinRating() {
+  //   return `
+  //   <div class="add-bookmark js-add-bookmark">
+  //   <button class="add-bookmark-btn js-add-bookmark-btn">
+  //     <span class="bookmark-button-label">Add Bookmark</span>
+  //   </button>
+  // </div>
+  
+  // <div class="dropdown">
+  //   <button class="dropbtn">Minimum Rating</button>
+  //   <div class="dropdown-content">
+  //     <a href="#">5 Stars &nbsp;<span>★★★★★</span></a>
+  //     <a href="#">4 Stars &nbsp;<span>★★★★☆</span></a>
+  //     <a href="#">3 Stars &nbsp;<span>★★★☆☆</span></a>
+  //     <a href="#">2 Stars &nbsp;<span>★★☆☆☆</span></a>
+  //     <a href="#">1 Star &nbsp;&nbsp;&nbsp;<span>★☆☆☆☆</span></a>
+  //   </div>
+  // </div>
+  //   `;
   // }
 
   function generateBookmarkString(bookmarkList) {
-    // console.log(`bookmarkList is ${bookmarkList}`);
     const bookmarkItemList = bookmarkList.map((bookmark) => generateBookmarkElement(bookmark));
     return bookmarkItemList.join('');
   }
@@ -85,9 +84,22 @@ const bookmarkList = (function() {
     let bookmark = bookmarks.items;
     console.log('`render` ran');
 
-    const bookmarkAddingState = generateAddingBookmarkElement();
-    $('.js-adding-state').html(bookmarkAddingState);
-    console.log(bookmarks.adding);
+    if (bookmarks.adding === true) {
+      const bookmarkAddingString = generateAddingBookmarkElement();
+      $('.bookmark-title-url-entry-form').html(bookmarkAddingString);
+    }
+    
+    // if (bookmarks.adding === false) {
+    //   const bookmarkAddButton = generateAddBookmarkAndMinRating();
+    //   $('.js-adding-state').html(bookmarkAddButton);
+    // }
+    // const bookmarkAddingState = generateAddingBookmarkElement();
+    // $('.js-adding-state').html(bookmarkAddingState);
+    // console.log(`bookmarkAddingState 1 ${bookmarks.adding}`);
+
+    if (bookmarks.filterByValue <= 5) {
+      bookmark = bookmarks.items.filter(bookmark => bookmark.rating >= bookmarks.filterByValue);
+    }
 
     const bookmarkListString = generateBookmarkString(bookmark);
     // insert HTML into the DOM in the right place <ul></ul>
@@ -96,11 +108,12 @@ const bookmarkList = (function() {
   }
 
   function handleAddBookmark() {
-    $('.js-add-bookmark').on('click', event => {
-      console.log(bookmarks.adding);
+    $('.js-add-bookmark').on('click', '.js-add-bookmark-btn', event => {
       event.preventDefault();
-      bookmarks.adding = true;
-      console.log(bookmarks.adding);
+      console.log(`handleAddBookmark test 1 ${bookmarks.adding}`);
+      bookmarks.toggleAddingFilter();
+      // bookmarks.adding = true;
+      console.log(`handleAddBookmark test 2 ${bookmarks.adding}`);
       render();
     });
   }
@@ -111,11 +124,12 @@ const bookmarkList = (function() {
 
       //
       // test codes
-      console.log(bookmarks.adding);
+      console.log(`handleNewBookmarkSubmit test 1 ${bookmarks.adding}`);
       // set adding to false to return to default state without showing 
       // the add bookmark form after successful submission
-      bookmarks.adding = false;
-      console.log(bookmarks.adding);
+      // bookmarks.toggleAddingFilter();
+      // bookmarks.adding = false;
+      // console.log(`handleNewBookmarkSubmit test 2 ${bookmarks.adding}`);
       //
       //
 
@@ -132,6 +146,9 @@ const bookmarkList = (function() {
       // create and add to both API and DOM
       api.createBookmark(newBookmarkName, newBookmarkURL, newBookmarkDescription, newStarRating, (callback) => {
         bookmarks.addItem(callback);
+        // bookmarks.adding = false;
+        bookmarks.toggleAddingFilter();
+        console.log(`handleNewBookmarkSubmit test 2 ${bookmarks.adding}`);
         render();
       });
     });
@@ -166,11 +183,20 @@ const bookmarkList = (function() {
     });
   }
 
+  function handleBookmarkRatingFilter() {
+    $('.dropdown').on('click', 'a', function(event) {
+      const filterByRating = $(event.target).data('value');
+      bookmarks.filterByValue = filterByRating;
+      render();
+    });
+  }
+
   function bindEventListeners() {
     handleNewBookmarkSubmit();
     handleDeleteBookmarkClicked();
     handleBookmarkDescriptionToggle();
     handleAddBookmark();
+    handleBookmarkRatingFilter();
   }
 
 
