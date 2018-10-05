@@ -106,7 +106,6 @@ const bookmarkList = (function() {
         bookmarks.adding = false;
         render();
       });
-      console.log(bookmarks);
     });
   }
 
