@@ -17,7 +17,7 @@ const api = (function(){
       success: callback,
       error: (err) => {
         bookmarks.error = err.statusText;
-        alert(bookmarks.error);
+        alert(bookmarks.error + ' Attributes `title` and `url` required');
       },
     });
   }
@@ -31,7 +31,7 @@ const api = (function(){
       success: callback,
       error: (err) => {
         bookmarks.error = err.statusText;
-        alert(bookmarks.error);
+        alert(bookmarks.error + ' Attributes `title` and `url` required');
       },
     });
   }

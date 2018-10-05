@@ -5,24 +5,26 @@
 const bookmarkList = (function() {
 
   function generateBookmarkElement(bookmark) {
+    let content = '';
+    if (bookmark.expanded) {
+      content = ` 
+      <div class="bookmark-description-container js-bookmark-description-container">
+        <div class="bookmark-user-description-input">${bookmark.desc}</div>
+        <div class="bookmark-visit-site-delete-btns">
+          <button type="button" class="bookmark-visit-site-btn js-bookmark-visit-site-btn" onclick=" window.open('${bookmark.url}','_blank')">Visit Site</button>
+          <button type="button" class="bookmark-delete-btn js-bookmark-delete-btn">Delete</button>
+          <button type="button" class="bookmark-edit-btn js-bookmark-edit-btn">Edit</button>
+        </div>
+      </div>`;
+    }
     return `
       <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
         <div class="bookmark-container">
           <div class="bookmark-title-container"><span class="bookmark-title-vert-align">${bookmark.title}</span>
-              <label class="switch js-bookmark-switch">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
+          <button type="button" class="bookmark-expand-details js-bookmark-expand-details">See Details</button>
             <div class=""><span>${bookmark.rating}/5 stars</span></div>
           </div>
-          <div class="bookmark-description-container js-bookmark-description-container">
-            <div class="bookmark-user-description-input">${bookmark.desc}</div>
-            <div class="bookmark-visit-site-delete-btns">
-                <button type="button" class="bookmark-visit-site-btn js-bookmark-visit-site-btn" onclick=" window.open('${bookmark.url}','_blank')">Visit Site</button>
-                <button type="button" class="bookmark-delete-btn js-bookmark-delete-btn">Delete</button>
-                <button type="button" class="bookmark-edit-btn js-bookmark-edit-btn">Edit</button>
-            </div>
-          </div>
+          ${content}
         </div>
       </li>
     `;
@@ -53,67 +55,33 @@ const bookmarkList = (function() {
     `;
   }
 
-  // function generateAddBookmarkAndMinRating() {
-  //   return `
-  //   <div class="add-bookmark js-add-bookmark">
-  //   <button class="add-bookmark-btn js-add-bookmark-btn">
-  //     <span class="bookmark-button-label">Add Bookmark</span>
-  //   </button>
-  // </div>
-  
-  // <div class="dropdown">
-  //   <button class="dropbtn">Minimum Rating</button>
-  //   <div class="dropdown-content">
-  //     <a href="#">5 Stars &nbsp;<span>★★★★★</span></a>
-  //     <a href="#">4 Stars &nbsp;<span>★★★★☆</span></a>
-  //     <a href="#">3 Stars &nbsp;<span>★★★☆☆</span></a>
-  //     <a href="#">2 Stars &nbsp;<span>★★☆☆☆</span></a>
-  //     <a href="#">1 Star &nbsp;&nbsp;&nbsp;<span>★☆☆☆☆</span></a>
-  //   </div>
-  // </div>
-  //   `;
-  // }
-
   function generateBookmarkString(bookmarkList) {
     const bookmarkItemList = bookmarkList.map((bookmark) => generateBookmarkElement(bookmark));
     return bookmarkItemList.join('');
   }
 
-
   function render() {
     let bookmark = bookmarks.items;
-    console.log('`render` ran');
 
     if (bookmarks.adding === true) {
       const bookmarkAddingString = generateAddingBookmarkElement();
       $('.bookmark-title-url-entry-form').html(bookmarkAddingString);
+    } else {
+      $('.bookmark-title-url-entry-form').html('');
     }
-    
-    // if (bookmarks.adding === false) {
-    //   const bookmarkAddButton = generateAddBookmarkAndMinRating();
-    //   $('.js-adding-state').html(bookmarkAddButton);
-    // }
-    // const bookmarkAddingState = generateAddingBookmarkElement();
-    // $('.js-adding-state').html(bookmarkAddingState);
-    // console.log(`bookmarkAddingState 1 ${bookmarks.adding}`);
 
     if (bookmarks.filterByValue <= 5) {
       bookmark = bookmarks.items.filter(bookmark => bookmark.rating >= bookmarks.filterByValue);
     }
 
     const bookmarkListString = generateBookmarkString(bookmark);
-    // insert HTML into the DOM in the right place <ul></ul>
     $('.js-bookmark-list').html(bookmarkListString);
-    // console.log(bookmarks);
   }
 
   function handleAddBookmark() {
     $('.js-add-bookmark').on('click', '.js-add-bookmark-btn', event => {
       event.preventDefault();
-      console.log(`handleAddBookmark test 1 ${bookmarks.adding}`);
-      bookmarks.toggleAddingFilter();
-      // bookmarks.adding = true;
-      console.log(`handleAddBookmark test 2 ${bookmarks.adding}`);
+      bookmarks.adding = true;
       render();
     });
   }
@@ -121,17 +89,6 @@ const bookmarkList = (function() {
   function handleNewBookmarkSubmit() {
     $('#js-create-bookmark-form').submit(function(event) {
       event.preventDefault();
-
-      //
-      // test codes
-      console.log(`handleNewBookmarkSubmit test 1 ${bookmarks.adding}`);
-      // set adding to false to return to default state without showing 
-      // the add bookmark form after successful submission
-      // bookmarks.toggleAddingFilter();
-      // bookmarks.adding = false;
-      // console.log(`handleNewBookmarkSubmit test 2 ${bookmarks.adding}`);
-      //
-      //
 
       // store user input values
       const newBookmarkName = $('.js-bookmark-title-entry').val();
@@ -146,9 +103,7 @@ const bookmarkList = (function() {
       // create and add to both API and DOM
       api.createBookmark(newBookmarkName, newBookmarkURL, newBookmarkDescription, newStarRating, (callback) => {
         bookmarks.addItem(callback);
-        // bookmarks.adding = false;
-        bookmarks.toggleAddingFilter();
-        console.log(`handleNewBookmarkSubmit test 2 ${bookmarks.adding}`);
+        bookmarks.adding = false;
         render();
       });
     });
@@ -171,15 +126,12 @@ const bookmarkList = (function() {
   }
 
   function handleBookmarkDescriptionToggle() {
-    $('.js-bookmark-list').on('click', '.js-bookmark-switch', event => {
+    $('.js-bookmark-list').on('click', '.js-bookmark-expand-details', event => {
       const id = getBookmarkIdFromElement(event.currentTarget);
       const bookmark = bookmarks.items.find((item) => id === item.id);
-      const checkedStatus = !bookmark.hideCheckedItems;
-      api.updateBookmark(id, {hideCheckedItems: checkedStatus}, () => {
-        bookmarks.findAndUpdate(id, {hideCheckedItems: checkedStatus});
-        console.log(bookmarks);
-        render();
-      });
+      const expandedStatus = !bookmark.expanded;
+      bookmarks.findAndUpdate(id, {expanded: expandedStatus});
+      render();
     });
   }
 
@@ -199,10 +151,9 @@ const bookmarkList = (function() {
     handleBookmarkRatingFilter();
   }
 
-
   return {
     render,
     bindEventListeners,
   };
-
+  
 }());

@@ -4,8 +4,9 @@
 
 const bookmarks = (function(){
 
-  const addItem = function(items) {
-    this.items.unshift(items);
+  const addItem = function(item) {
+    item.expanded = false;
+    this.items.unshift(item);
   };
 
   const findAndDelete = function(id) {
@@ -15,7 +16,6 @@ const bookmarks = (function(){
   const findAndUpdate = function(id, newData){
     let item = this.items.find((item) => id === item.id);
     item = Object.assign(item, newData);
-    // console.log(item);
   };
 
   const toggleAddingFilter = function() {
@@ -27,8 +27,8 @@ const bookmarks = (function(){
   return {
     items: [],
     adding: false,
-    hideCheckedItems: false,
     filterByValue: 0,
+    showDescription: false,
 
     addItem,
     findAndDelete,
